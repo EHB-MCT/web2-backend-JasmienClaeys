@@ -9,7 +9,7 @@ const port = process.env.PORT || 3000;
 
 
 const client = new MongoClient(process.env.FINAL_URL);
-const dbName = "session7";
+const dbName = "eindopdracht";
 
 
 // app.use(bodyParser.urlencoded({extended = true}));
@@ -17,19 +17,19 @@ app.use(bodyParser.json());
 // app.use(cors());
 
 app.get('/', (req, res) => {
-    res.send('Get all challenges: /allChallenges ' + 'Post challenge: /saveChallenge ' + 'unfortunately the put and the delete does not work');
+    res.send('Get all favorite recipes: /favoriteRecipes');
 
 })
 
-app.get('/allChallenges', async (req, res) => {
+app.get('/favoriteRecipes', async (req, res) => {
     try {
         await client.connect();
         
         const db = client.db(dbName)
-        const colli = db.collection('challenges');
-        const findChallenge = await colli.find({}).toArray();
+        const colli = db.collection('favoriteRecipes');
+        const findRecipes = await colli.find({}).toArray();
 
-        res.status(200).send(findChallenge);
+        res.status(200).send(findRecipes);
        } catch (err) {
         console.log('get',err);
         res.status(500).send({
@@ -43,7 +43,7 @@ app.get('/allChallenges', async (req, res) => {
    }
 
 })
-app.post('/saveChallenge', async (req, res) => {
+app.post('/saveRecipe', async (req, res) => {
     console.log(req.body)
 
 
@@ -51,18 +51,18 @@ app.post('/saveChallenge', async (req, res) => {
         await client.connect();
 
         const db = client.db(dbName)
-        const colli = db.collection('challenges');
+        const colli = db.collection('favoriteRecipes');
 
-        let newChallenge = {
+        let newFavoriteRecipe = {
             name: req.body.name,
             points: req.body.points,
             course: req.body.course,
             session: req.body.session
         }
 
-        let insertResultChallenge = await colli.insertOne(newChallenge);
+        let insertResultRecipe = await colli.insertOne(newFavoriteRecipe);
 
-        res.status(201).send(newChallenge)
+        res.status(201).send(newFavoriteRecipe)
         return;
 
     }catch (err) {
@@ -77,12 +77,12 @@ app.post('/saveChallenge', async (req, res) => {
     }
 })
 
-app.put('/allChallenges/:id', (req, res) => {
-    res.send('Update oki');
+app.put('/favoriteRecipes/:id', (req, res) => {
+    res.send('Update oke');
 });
   
-app.delete('/allChallenges/:id', (req, res) => {
-    res.send('Delete oki');
+app.delete('/favoriteRecipes/:id', (req, res) => {
+    res.send('Delete oke');
 });
 
 app.listen(port, () => {
