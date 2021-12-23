@@ -18,7 +18,7 @@ db.connect({
 const app = express();
 const port = process.env.PORT || 3000;
 
-const client = new MongoClient(process.env.FINAL_URL);
+const client = new MongoClient(process.env.DB_FINAL_URL);
 const dbName = "eindopdracht";
 
 const result = dotenv.config()
